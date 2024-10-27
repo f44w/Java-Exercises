@@ -37,12 +37,14 @@ public class NodeQueue<E> implements QueueADT<E>
     // create and link in a new node at tail
         Node<E> newNode = new Node<>(elem, null);
         if(isEmpty()){
-        // Front and rear are on the same node
+        // Front and rear are on the same/only node
             head = tail = newNode;
         }else{
+            // set rear to next element:
             tail.setNext(newNode);
             tail = newNode;
         }
+        // Increment size:
         size++;
     }
 
@@ -51,7 +53,7 @@ public class NodeQueue<E> implements QueueADT<E>
     */
     public E front() {
         if (isEmpty()) {
-            throw new EmptyQueueException("Empty Queue");
+            throw new EmptyQueueException("Empty Queue! No front element!");
         }
         return head.getElement();
     }
@@ -64,11 +66,11 @@ public class NodeQueue<E> implements QueueADT<E>
             // Empty queue, throw exception:
             throw new EmptyQueueException("Empty Queue! Nothing to dequeue!");
         }else{
-            // Not empty:
             // Get current head element to return
             E element = head.getElement();
             // Move head to next Node
             head = head.getNext();
+            // Dec size
             size--;
             return element;
         }

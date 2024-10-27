@@ -15,8 +15,7 @@ public class ExtendableArrayQueue<E> implements QueueADT<E>
     //With this constructor a queue can initially hold up to
     //3 (i.e.N-1) items when using the approach described in lectures.
 
-   public ExtendableArrayQueue()
-   {
+   public ExtendableArrayQueue() {
        N=4;
        Q = (E[]) new Object[N]; 
        f=0;
@@ -27,21 +26,24 @@ public class ExtendableArrayQueue<E> implements QueueADT<E>
    // appropriate. Many of the method bodies can be the same as in Q3i
    
    public void enqueue(E element){
+      // Is array full?
       if(size() == N-1){
-         throw new FullQueueException("Queue is full!");
-      }else{
-         Q[r] = element;
-         r = (r+1)%N;
+         extendCapacity();
       }
+      // Add element and change rear:
+      Q[r] = element;
+      r = (r+1)%N;
    }
    
-
-  //   @throws EmptyQueueException
+   /**
+  @throws EmptyQueueException
+  */
 
    public E dequeue(){
-      if(f==r){
-         throw new EmptyQueueException("Queue is empty!");
+      if(isEmpty()){
+         throw new EmptyQueueException("Queue is empty! Nothing to dequeue!");
       }else{
+         // Not empty, remove element
          E elementRemoved = Q[f];
          f = (f+1)%N;
          return elementRemoved;
@@ -49,8 +51,9 @@ public class ExtendableArrayQueue<E> implements QueueADT<E>
 
    }
    
-
-   //  @throws EmptyQueueException
+   /**
+     @throws EmptyQueueException
+     */
 
    public E front(){
       if (r == f)
@@ -60,7 +63,7 @@ public class ExtendableArrayQueue<E> implements QueueADT<E>
    }
 
    public int size(){
-      return N;
+      return (r-f+N)%N;
    }
 
    public boolean isEmpty(){
@@ -69,13 +72,19 @@ public class ExtendableArrayQueue<E> implements QueueADT<E>
 
    public void extendCapacity() {
       // New queue object with 2x capacity:
-      Q = (E[]) new Object[N*2];
-      if(f <= r){
+      E[] newQ = (E[]) new Object[N*2];
+      if (f <= r){
+         System.arraycopy(Q,f,newQ,0,N);
+      }else{
+         // Copy from front to index 0:
+         System.arraycopy(Q,f,newQ,0,N-f);
+         // Copy from index 0 to end:
+         System.arraycopy(Q,0,newQ,N-f,N);
       }
-   }
-   private void arraycopy(E Q, int front, int rear, E newQ, int index, int size){
-      for(int i=0; i<index;i++){
-
-      }
+      // Change the array once we have new one out of method:
+      Q = newQ;
+      f = 0;
+      r = N-1; // Last valid index in old queue
+      N = N * 2;
    }
 }

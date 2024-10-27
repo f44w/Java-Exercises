@@ -48,8 +48,10 @@ public class Deque <E> implements DequeADT<E>
     public void insertRear(E data) {
         DoubleNode<E> newNode = new DoubleNode<>(data, null, rear);
         if(isEmpty()){
+            // New node is both front and end
             rear = front = newNode;
         }else{
+            // Rear is one after
             rear.setNext(newNode);
             rear = newNode;
         }
@@ -59,9 +61,9 @@ public class Deque <E> implements DequeADT<E>
     // Remove an element from the front of the deque
     public E deleteFront() {
         if (isEmpty()) {
-            throw new IllegalStateException("Deque is empty");
+            throw new IllegalStateException("Deque is empty! Nothing to delete!");
         }
-        E data = front.getElement();
+        E dataRemoved = front.getElement();
         if (front == rear) { // Only one element
             front = rear = null;
         } else {
@@ -69,7 +71,7 @@ public class Deque <E> implements DequeADT<E>
             front.setPrevious(null);
         }
         size --;
-        return data;
+        return dataRemoved;
     }
 
     // Remove an element from the rear of the deque
@@ -77,11 +79,14 @@ public class Deque <E> implements DequeADT<E>
         if(isEmpty()){
             throw new EmptyQueueException("Deque is empty! Nothing to delete!");
         }
+        // Get rear to return
         E dataRemoved = rear.getElement();
         if(size == 1){
             front = rear = null;
         }else{
+            // Move rear back one to get new rear:
             rear = rear.getPrevious();
+            // Old rear set to null:
             rear.setNext(null);
         }
         size--;
