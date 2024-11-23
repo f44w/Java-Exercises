@@ -17,10 +17,11 @@ public class BTree<E> {
     }
 
     private void inorderHelper(BTNode<E> node) {
-
-
-
-
+        if(node != null) {
+            inorderHelper(node.getLeftChild());
+            System.out.println(node.getValue());
+            inorderHelper(node.getRightChild());
+        }
     }
 
     public void preorderTraversal() {
@@ -29,11 +30,11 @@ public class BTree<E> {
     }
 
     private void preorderHelper(BTNode<E> node) {
-
-
-
-
-
+        if(node != null) {
+            System.out.println(node.getValue());
+            preorderHelper(node.getLeftChild());
+            preorderHelper(node.getRightChild());
+        }
     }
 
     public void postorderTraversal() {
@@ -42,30 +43,42 @@ public class BTree<E> {
     }
 
     private void postorderHelper(BTNode<E> node) {
-
-
-
-
-
-
+        if(node != null) {
+            postorderHelper(node.getLeftChild());
+            postorderHelper(node.getRightChild());
+            System.out.println(node.getValue());
+        }
     }
 
     // Main method to test the traversals
     public static void main(String[] args) {
         // Creating nodes
+       /*
         BTNode<Integer> node1 = new BTNode<>(1, null, null);
         BTNode<Integer> node2 = new BTNode<>(2, null, null);
         BTNode<Integer> node3 = new BTNode<>(3, null, null);
         BTNode<Integer> node4 = new BTNode<>(4, null, null);
         BTNode<Integer> node5 = new BTNode<>(5, null, null);
 
+        */
+        BTNode<String> node1 = new BTNode<>("3", null, null);
+        BTNode<String> node2 = new BTNode<>("+", null, null);
+        BTNode<String> node3 = new BTNode<>("*", null, null);
+        BTNode<String> node4 = new BTNode<>("+", null, null);
+        BTNode<String> node5 = new BTNode<>("2", null, null);
+        BTNode<String> node6 = new BTNode<>("5", null, null);
+        BTNode<String> node7 = new BTNode<>("9", null, null);
+
+
         // Constructing the tree
         node2.setLeftChild(node1);        // 2 -> 1
         node2.setRightChild(node3);       // 2 -> 3
         node3.setRightChild(node5);       // 3 -> 5
         node3.setLeftChild(node4);        // 3 -> 4
+        node4.setLeftChild(node6);
+        node4.setRightChild(node7);
 
-        BTree<Integer> tree = new BTree<>(node2); // Root is node 2
+        BTree<String> tree = new BTree<>(node2); // Root is node 2
 
         System.out.println("Inorder Traversal:");
         tree.inorderTraversal();
